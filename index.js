@@ -1,31 +1,34 @@
-// Arrays to keep track of each task's state
-const taskTitles = [];
-const taskComplete = [];
+// Get rid of the arrays, refactor, use an object to keep track of the state
+//After the refactoring, each function now accepts a task object instead of an array index
+//Creating functions that are more independent and more portable reduces the risk of functions accidentally modifying something you didn't mean to
 
-// Create a new task by adding to the arrays
 // A new task will be created as incomplete
-function newTask(title) {
-  taskTitles.push(title);
-  taskComplete.push(false);
-}
-
-// Mark a task as complete by setting the task's status in the `taskComplete` array to `true`
-function completeTask(taskIndex) {
-  taskComplete[taskIndex] = true;
-}
-
-// Print the state of a task to the console in a nice readable way
-function logTaskState(taskIndex) {
-  const title = taskTitles[taskIndex];
-  const complete = taskComplete[taskIndex];
-  console.log(`${title} has${complete ? " " : " not "}been completed`);
+function newTask(title, description) {
+  const task = {
+    title: title,
+    description: description,
+    complete: false,
+    logState: function() {//state of task mathod
+      console.log(`${task.title} has${task.complete ? " " : " not "}been completed`)
+    },
+    markCompleted: function() {
+      this.complete = true;
+    }
+  };
+  return task;
 }
 
 // DRIVER CODE BELOW
 
-newTask("Clean Cat Litter"); // task 0
-newTask("Do Laundry"); // task 1
+const task1 = newTask("Clean Cat Litter", "Take all the poop out of the litter box");
+const task2 = newTask("Do laundry", "desc");
+const tasks = [task1, task2];
 
-logTaskState(0); // Clean Cat Litter has not been completed
-completeTask(0);
-logTaskState(0); // Clean Cat Litter has been completed
+//Instead of keeping track of all the details in individual arrays, we are now using an object to group the task data together and keep this code more organized.
+//OO bundles together state and logic into an object that can be represented as a single variable
+
+task1.logState();
+task1.markCompleted();
+task1.logState();
+console.log("task:", task1);
+console.log("task title:", task1.title);
